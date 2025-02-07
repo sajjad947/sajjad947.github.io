@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>برنامه‌ها - NHDownload</title>
+  <style>
+    /* استایل پایه */
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      overflow-x: hidden;
+      direction: rtl;
+    }
+    /* استایل canvas پس‌زمینه */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    /* استایل محتوای صفحه */
+    .container {
+      padding-top: 100px;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      text-align: center;
+      color: #001f3f;
+      margin-top: 20px;
+    }
+    /* استایل آیتم برنامه */
+    .program-item {
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #00aaff;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+    .program-item:hover {
+      background-color: #007acc;
+    }
+    .program-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .program-header .program-name {
+      flex: 1;
+    }
+    .program-header .program-icon {
+      width: 50px;
+      height: 50px;
+      background-color: #001f3f;
+      border-radius: 5px;
+      margin-left: 10px;
+      background-size: cover;
+      background-position: center;
+    }
+    .program-details {
+      margin-top: 15px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      padding: 10px;
+      display: none;
+    }
+    .program-images {
+      display: flex;
+      overflow-x: auto;
+    }
+    .program-images img {
+      width: 100px;
+      height: 100px;
+      margin-right: 10px;
+      border-radius: 5px;
+    }
+    .download-box {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .download-box button {
+      background-color: #001f3f;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Canvas پس‌زمینه -->
+  <canvas id="bgCanvas"></canvas>
+  
+  <div class="container">
+    <h1>برنامه‌ها</h1>
+    <!-- محل قرارگیری آیتم‌های برنامه -->
+    <div id="programList"></div>
+  </div>
+  
+  <script>
+    // کد پس‌زمینه با canvas
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drawBackground();
+    }
+    window.addEventListener('resize', resizeCanvas);
+    function drawBackground() {
+      ctx.fillStyle = "#d0e7ff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 15; i++) {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let radius = Math.random() * 80 + 20;
+        let gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        gradient.addColorStop(0, "rgba(0, 90, 180, 0.5)");
+        gradient.addColorStop(1, "rgba(0, 90, 180, 0)");
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    resizeCanvas();
+    
+    // آرایه اطلاعات برنامه‌ها
+    const programs = [
+      {
+        name: "Simple calculator",
+        icon: "programs/Simple calculator/logo.png",
+        images: ["programs/Simple calculator/screenshot.png"],
+        description: "این برنامه ، یک ماشین حساب ساخته شده با زبان برنامه نویسی پایتون است.",
+        downloadLink: "programs/Simple calculator/download.html"
+      },
+      {
+        name: "برنامه دوم",
+        icon: "icon-placeholder2.png",
+        images: ["screenshot4.png", "screenshot5.png"],
+        description: "توضیحات درباره برنامه دوم",
+        downloadLink: "https://example.com/download2"
+      }
+      // برای افزودن برنامه جدید، کافیست یک شیء جدید به این آرایه اضافه کنید.
+    ];
+    
+    // تابع رندر کردن برنامه‌ها به داخل صفحه
+    function renderPrograms() {
+      let container = document.getElementById("programList");
+      let html = "";
+      programs.forEach((program, index) => {
+        html += `
+          <div class="program-item">
+            <div class="program-header" onclick="toggleDetails(${index})">
+              <div class="program-name">${program.name}</div>
+              <div class="program-icon" style="background-image: url('${program.icon}');"></div>
+            </div>
+            <div class="program-details" id="details-${index}">
+              <div class="program-images">
+                ${program.images.map(img => `<img src="${img}" alt="تصویر">`).join('')}
+              </div>
+              <p>${program.description}</p>
+              <div class="download-box">
+                <a href="${program.downloadLink}" target="_blank">
+                  <button>دانلود</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+    
+    // تابع باز/بسته کردن جزئیات
+    function toggleDetails(index) {
+      const details = document.getElementById("details-" + index);
+      if(details.style.display === "none" || details.style.display === "") {
+        details.style.display = "block";
+      } else {
+        details.style.display = "none";
+      }
+    }
+    
+    renderPrograms();
+  </script>
+</body>
+</html>
