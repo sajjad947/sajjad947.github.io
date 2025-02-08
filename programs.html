@@ -93,6 +93,18 @@
       border-radius: 5px;
       cursor: pointer;
     }
+    /* استایل دکمه قلب */
+    .heart-box {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .heart-box button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -106,15 +118,15 @@
   </div>
   
   <script>
-    // کد پس‌زمینه با canvas
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
+    /***** کد مربوط به پس‌زمینه (Canvas) *****/
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       drawBackground();
     }
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
     function drawBackground() {
       ctx.fillStyle = "#d0e7ff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -133,26 +145,28 @@
     }
     resizeCanvas();
     
-    // آرایه اطلاعات برنامه‌ها
+    /***** آرایه اطلاعات برنامه‌ها *****/
     const programs = [
       {
         name: "Simple calculator",
         icon: "programs/Simple_calculator/logo.png",
         images: ["programs/Simple_calculator/Screenshot.png"],
         description: "این برنامه ، یک ماشین حساب ساخته شده با زبان برنامه نویسی پایتون است.",
-        downloadLink: "programs/Simple_calculator/download.html"
+        downloadLink: "programs/Simple_calculator/download.html",
+        hearts: 0
       },
       {
         name: "برنامه دوم",
         icon: "icon-placeholder2.png",
         images: ["screenshot4.png", "screenshot5.png"],
         description: "توضیحات درباره برنامه دوم",
-        downloadLink: "https://example.com/download2"
+        downloadLink: "https://example.com/download2",
+        hearts: 0
       }
       // برای افزودن برنامه جدید، کافیست یک شیء جدید به این آرایه اضافه کنید.
     ];
     
-    // تابع رندر کردن برنامه‌ها به داخل صفحه
+    /***** تابع رندر کردن برنامه‌ها *****/
     function renderPrograms() {
       let container = document.getElementById("programList");
       let html = "";
@@ -173,6 +187,11 @@
                   <button>دانلود</button>
                 </a>
               </div>
+              <div class="heart-box">
+                <button onclick="giveHeart(${index})">
+                  ❤️ <span id="heartCount-${index}">${program.hearts}</span>
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -180,7 +199,7 @@
       container.innerHTML = html;
     }
     
-    // تابع باز/بسته کردن جزئیات
+    /***** تابع باز/بسته کردن جزئیات هر برنامه *****/
     function toggleDetails(index) {
       const details = document.getElementById("details-" + index);
       if(details.style.display === "none" || details.style.display === "") {
@@ -190,6 +209,29 @@
       }
     }
     
+    /***** تابع ثبت رأی (قلب دادن) برای هر برنامه *****/
+    function giveHeart(index) {
+      // ایجاد کلید منحصر به فرد برای این آیتم
+      const votedKey = "voted_item_" + index;
+      // بررسی اینکه آیا کاربر قبلاً رأی داده یا نه
+      if (localStorage.getItem(votedKey)) {
+        alert("قبلاً به این آیتم رأی داده‌اید!");
+        return;
+      }
+      // افزایش تعداد قلب‌ها
+      programs[index].hearts++;
+      document.getElementById("heartCount-" + index).innerText = programs[index].hearts;
+      // ثبت رأی در localStorage
+      localStorage.setItem(votedKey, "true");
+      // غیر فعال کردن دکمه رأی‌دهی برای جلوگیری از کلیک مجدد
+      const button = document.querySelector(`#details-${index} .heart-box button`);
+      if (button) {
+        button.disabled = true;
+        button.style.cursor = "not-allowed";
+      }
+    }
+    
+    /***** رندر نهایی آیتم‌ها *****/
     renderPrograms();
   </script>
 </body>
