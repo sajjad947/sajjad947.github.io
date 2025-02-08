@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مپ‌های ماینکرافت - NHDownload</title>
   <style>
+    /* استایل پایه */
     body {
       margin: 0;
       font-family: sans-serif;
       overflow-x: hidden;
       direction: rtl;
     }
+    /* استایل canvas پس‌زمینه */
     #bgCanvas {
       position: fixed;
       top: 0;
       left: 0;
       z-index: -1;
     }
+    /* استایل محتوای صفحه */
     .container {
       padding-top: 100px;
       position: relative;
@@ -27,6 +30,7 @@
       color: #001f3f;
       margin-top: 20px;
     }
+    /* استایل آیتم مپ */
     .map-item {
       width: 80%;
       max-width: 600px;
@@ -89,26 +93,40 @@
       border-radius: 5px;
       cursor: pointer;
     }
+    /* استایل دکمه قلب */
+    .heart-box {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .heart-box button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: red;
+    }
   </style>
 </head>
 <body>
+  <!-- Canvas پس‌زمینه -->
   <canvas id="bgCanvas"></canvas>
   
   <div class="container">
     <h1>مپ‌های ماینکرافت</h1>
+    <!-- محل قرارگیری آیتم‌های مپ -->
     <div id="mapList"></div>
   </div>
   
   <script>
-    // کد پس‌زمینه مشابه
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
+    /***** کد مربوط به پس‌زمینه (Canvas) *****/
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       drawBackground();
     }
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
     function drawBackground() {
       ctx.fillStyle = "#d0e7ff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -127,25 +145,28 @@
     }
     resizeCanvas();
     
-    // آرایه اطلاعات مپ‌ها
+    /***** آرایه اطلاعات مپ‌ها *****/
     const maps = [
       {
         name: "مپ اول",
-        icon: "icon-map.png",
-        images: ["map-screenshot1.png", "map-screenshot2.png", "map-screenshot3.png"],
-        description: "توضیحات درباره مپ اول",
-        downloadLink: "https://example.com/map-download1"
+        icon: "maps/map1/logo.png",
+        images: ["maps/map1/screenshot.png"],
+        description: "توضیحات درباره مپ اول.",
+        downloadLink: "maps/map1/download.html",
+        hearts: 0
       },
       {
         name: "مپ دوم",
-        icon: "icon-map2.png",
-        images: ["map-screenshot4.png", "map-screenshot5.png"],
-        description: "توضیحات درباره مپ دوم",
-        downloadLink: "https://example.com/map-download2"
+        icon: "maps/map2/logo.png",
+        images: ["maps/map2/screenshot.png"],
+        description: "توضیحات درباره مپ دوم.",
+        downloadLink: "https://example.com/map-download",
+        hearts: 0
       }
       // برای افزودن مپ جدید، یک شیء جدید به این آرایه اضافه کنید.
     ];
     
+    /***** تابع رندر کردن مپ‌ها *****/
     function renderMaps() {
       let container = document.getElementById("mapList");
       let html = "";
@@ -166,6 +187,11 @@
                   <button>دانلود</button>
                 </a>
               </div>
+              <div class="heart-box">
+                <button onclick="giveMapHeart(${index})">
+                  ❤️ <span id="mheartCount-${index}">${mapItem.hearts}</span>
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -173,6 +199,7 @@
       container.innerHTML = html;
     }
     
+    /***** تابع باز/بسته کردن جزئیات هر مپ *****/
     function toggleMapDetails(index) {
       const details = document.getElementById("mdetails-" + index);
       if(details.style.display === "none" || details.style.display === "") {
@@ -182,6 +209,24 @@
       }
     }
     
+    /***** تابع ثبت رأی (قلب دادن) برای مپ‌ها *****/
+    function giveMapHeart(index) {
+      const votedKey = "voted_map_" + index;
+      if (localStorage.getItem(votedKey)) {
+        alert("قبلاً به این آیتم رأی داده‌اید!");
+        return;
+      }
+      maps[index].hearts++;
+      document.getElementById("mheartCount-" + index).innerText = maps[index].hearts;
+      localStorage.setItem(votedKey, "true");
+      const button = document.querySelector(`#mdetails-${index} .heart-box button`);
+      if (button) {
+        button.disabled = true;
+        button.style.cursor = "not-allowed";
+      }
+    }
+    
+    /***** رندر نهایی آیتم‌ها *****/
     renderMaps();
   </script>
 </body>
