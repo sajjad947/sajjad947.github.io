@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بازی‌ها - NHDownload</title>
   <style>
+    /* استایل پایه */
     body {
       margin: 0;
       font-family: sans-serif;
       overflow-x: hidden;
       direction: rtl;
     }
+    /* استایل canvas پس‌زمینه */
     #bgCanvas {
       position: fixed;
       top: 0;
       left: 0;
       z-index: -1;
     }
+    /* استایل محتوای صفحه */
     .container {
       padding-top: 100px;
       position: relative;
@@ -27,6 +30,7 @@
       color: #001f3f;
       margin-top: 20px;
     }
+    /* استایل آیتم بازی */
     .game-item {
       width: 80%;
       max-width: 600px;
@@ -89,26 +93,40 @@
       border-radius: 5px;
       cursor: pointer;
     }
+    /* استایل دکمه قلب */
+    .heart-box {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .heart-box button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: red;
+    }
   </style>
 </head>
 <body>
+  <!-- Canvas پس‌زمینه -->
   <canvas id="bgCanvas"></canvas>
   
   <div class="container">
     <h1>بازی‌ها</h1>
+    <!-- محل قرارگیری آیتم‌های بازی -->
     <div id="gameList"></div>
   </div>
   
   <script>
-    // کد پس‌زمینه مشابه
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
+    /***** کد مربوط به پس‌زمینه (Canvas) *****/
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       drawBackground();
     }
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
     function drawBackground() {
       ctx.fillStyle = "#d0e7ff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -127,25 +145,28 @@
     }
     resizeCanvas();
     
-    // آرایه اطلاعات بازی‌ها
+    /***** آرایه اطلاعات بازی‌ها *****/
     const games = [
       {
         name: "بازی اول",
-        icon: "icon-game.png",
-        images: ["game-screenshot1.png", "game-screenshot2.png", "game-screenshot3.png"],
-        description: "توضیحات درباره بازی اول",
-        downloadLink: "https://example.com/game-download1"
+        icon: "games/game1/logo.png",
+        images: ["games/game1/screenshot.png"],
+        description: "توضیحات درباره بازی اول.",
+        downloadLink: "games/game1/download.html",
+        hearts: 0
       },
       {
         name: "بازی دوم",
-        icon: "icon-game2.png",
-        images: ["game-screenshot4.png", "game-screenshot5.png"],
-        description: "توضیحات درباره بازی دوم",
-        downloadLink: "https://example.com/game-download2"
+        icon: "games/game2/logo.png",
+        images: ["games/game2/screenshot.png"],
+        description: "توضیحات درباره بازی دوم.",
+        downloadLink: "https://example.com/game-download",
+        hearts: 0
       }
-      // برای افزودن بازی جدید، یک شیء جدید به آرایه اضافه کنید.
+      // برای افزودن بازی جدید، یک شیء جدید به این آرایه اضافه کنید.
     ];
     
+    /***** تابع رندر کردن بازی‌ها *****/
     function renderGames() {
       let container = document.getElementById("gameList");
       let html = "";
@@ -166,6 +187,11 @@
                   <button>دانلود</button>
                 </a>
               </div>
+              <div class="heart-box">
+                <button onclick="giveGameHeart(${index})">
+                  ❤️ <span id="gheartCount-${index}">${game.hearts}</span>
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -173,6 +199,7 @@
       container.innerHTML = html;
     }
     
+    /***** تابع باز/بسته کردن جزئیات هر بازی *****/
     function toggleGameDetails(index) {
       const details = document.getElementById("gdetails-" + index);
       if(details.style.display === "none" || details.style.display === "") {
@@ -182,6 +209,24 @@
       }
     }
     
+    /***** تابع ثبت رأی (قلب دادن) برای بازی‌ها *****/
+    function giveGameHeart(index) {
+      const votedKey = "voted_game_" + index;
+      if (localStorage.getItem(votedKey)) {
+        alert("قبلاً به این آیتم رأی داده‌اید!");
+        return;
+      }
+      games[index].hearts++;
+      document.getElementById("gheartCount-" + index).innerText = games[index].hearts;
+      localStorage.setItem(votedKey, "true");
+      const button = document.querySelector(`#gdetails-${index} .heart-box button`);
+      if (button) {
+        button.disabled = true;
+        button.style.cursor = "not-allowed";
+      }
+    }
+    
+    /***** رندر نهایی آیتم‌ها *****/
     renderGames();
   </script>
 </body>
