@@ -103,18 +103,6 @@
     .download-box button:hover {
       background-color: #00aaff;
     }
-    /* استایل دکمه قلب */
-    .heart-box {
-      margin-top: 10px;
-      text-align: center;
-    }
-    .heart-box button {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      font-size: 20px;
-      color: red;
-    }
     /* انیمیشن‌ها */
     @keyframes fadeIn {
       0% {
@@ -184,7 +172,6 @@
         images: ["programs/Simple_calculator/Screenshot.png"],
         description: "این برنامه ، یک ماشین حساب ساخته شده با زبان برنامه نویسی پایتون است.",
         downloadLink: "programs/Simple_calculator/download.html",
-        hearts: 0
       },
       {
         name: "MiniNikProject",
@@ -192,7 +179,6 @@
         images: ["Screenshot.png"],
         description: "این برنامه معدل شما را محاسبه می کند.این برنامه ساخته شده توسط سلطان نیکونام است.این یک برنامه فوق حرفه ای است.",
         downloadLink: "programs/MiniNikProject/download.html",
-        hearts: 0
       }
       // برای افزودن برنامه جدید، کافیست یک شیء جدید به این آرایه اضافه کنید.
     ];
@@ -218,11 +204,6 @@
                   <button>دانلود</button>
                 </a>
               </div>
-              <div class="heart-box">
-                <button onclick="giveHeart(${index})">
-                  ❤️ <span id="heartCount-${index}">${program.hearts}</span>
-                </button>
-              </div>
             </div>
           </div>
         `;
@@ -238,30 +219,7 @@
       } else {
         details.style.display = "none";
       }
-    }
-    
-    /***** تابع ثبت رأی (قلب دادن) برای هر برنامه *****/
-    function giveHeart(index) {
-      // ایجاد کلید منحصر به فرد برای این آیتم
-      const votedKey = "voted_item_" + index;
-      // بررسی اینکه آیا کاربر قبلاً رأی داده یا نه
-      if (localStorage.getItem(votedKey)) {
-        alert("قبلاً به این آیتم رأی داده‌اید!");
-        return;
-      }
-      // افزایش تعداد قلب‌ها
-      programs[index].hearts++;
-      document.getElementById("heartCount-" + index).innerText = programs[index].hearts;
-      // ثبت رأی در localStorage
-      localStorage.setItem(votedKey, "true");
-      // غیر فعال کردن دکمه رأی‌دهی برای جلوگیری از کلیک مجدد
-      const button = document.querySelector(`#details-${index} .heart-box button`);
-      if (button) {
-        button.disabled = true;
-        button.style.cursor = "not-allowed";
-      }
-    }
-    
+    } 
     /***** رندر نهایی آیتم‌ها *****/
     renderPrograms();
   </script>
