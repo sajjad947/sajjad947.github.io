@@ -1,207 +1,80 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NHDownload - صفحه اصلی</title>
-  <style>
-    /* استایل پایه */
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      overflow-x: hidden;
-      direction: rtl;
-    }
-    /* استایل canvas پس‌زمینه */
-    #bgCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-    /* استایل محتوای صفحه */
-    .container {
-      text-align: center;
-      padding-top: 150px;
-      position: relative;
-      z-index: 1;
-    }
-    h1 {
-      color: #001f3f;
-      font-size: 48px;
-      margin-bottom: 10px;
-      animation: fadeIn 2s ease-in-out;
-    }
-    p {
-      color: #00aaff;
-      font-size: 24px;
-      animation: fadeIn 2s ease-in-out;
-    }
-    /* استایل آیکون همبرگر */
-    .hamburger {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background-color: #001f3f;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 2;
-    }
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background-color: #fff;
-      margin: 3px 0;
-      transition: all 0.3s;
-    }
-    /* استایل نوار کناری (sidebar) */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      right: -250px;
-      width: 250px;
-      height: 100%;
-      background-color: rgba(0, 170, 255, 0.8); /* شفاف کردن پس‌زمینه */
-      backdrop-filter: blur(10px); /* حالت شیشه‌ای */
-      box-shadow: -2px 0 5px rgba(0,0,0,0.5);
-      transition: right 0.3s;
-      padding: 20px;
-      box-sizing: border-box;
-      z-index: 2;
-    }
-    .sidebar.open {
-      right: 0;
-    }
-    .close-btn {
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      text-align: left;
-    }
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 30px;
-    }
-    .sidebar ul li {
-      margin: 20px 0;
-    }
-    .sidebar ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 20px;
-    }
-    /* انیمیشن برای توپ‌های پس‌زمینه */
-    @keyframes moveBalls {
-      0% {
-        transform: translate(0, 0);
-      }
-      50% {
-        transform: translate(50px, 50px);
-      }
-      100% {
-        transform: translate(0, 0);
-      }
-    }
-    /* انیمیشن برای متن‌های صفحه خوش‌آمدگویی */
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
+	<meta charset="UTF-8">
+	<title>NHDownload</title>
+	<style>
+		body{
+			background-color: gray;
+			color: white;
+			font-family: Tahoma;
+			box-sizing: border-box;
+			padding: 0px;
+			margin: 0px;
+		}
+		header{
+			background-color: black;
+		}
+		.main{
+			display: flex;
+			justify-content: center;
+			text-align: center;
+			height: 77vh;
+			box-shadow: 0px 0px 10px 2px rgb(255,255,255);
+		}
+		h1{
+			text-align: center;
+			padding: 5px;
+		}
+		.menu{
+			background-color: lightGray;
+			display: flex;
+			gap: 20px;
+			list-style: none;
+			padding: 10px;
+			border-radius: 5px;
+		}
+		.menu li{
+			background-color: white;
+			border-radius: 10px;
+			cursor: pointer;
+			box-shadow: 0px 1px 3px 0px rgb(0,0,0.1);
+			transition: transform 0.3s ease, background-color 0.3s ease;
+		}
+		.menu a{
+			text-decoration: none;
+			color: black;
+			display: block;
+			padding: 10px;
+		}
+		.menu li:hover{
+			background-color: gray;
+			transform: translateY(-3px)
+		}
+		.menu a:hover{
+			color: white;
+		}
+		footer{
+			text-align: center;
+			color: black;
+		}
+	</style>
 </head>
 <body>
-  <!-- Canvas پس‌زمینه -->
-  <canvas id="bgCanvas"></canvas>
-  
-  <!-- آیکون همبرگر -->
-  <div class="hamburger" id="hamburger">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-  
-  <!-- نوار کناری -->
-  <div class="sidebar" id="sidebar">
-    <div class="close-btn" id="close-btn">&times;</div>
-    <ul>
-      <li><a href="programs.html">برنامه‌ها</a></li>
-      <li><a href="games.html">بازی‌ها</a></li>
-    </ul>
-  </div>
-  
-  <!-- محتوای صفحه اصلی -->
-  <div class="container">
-    <h1>به سایت NHDownload خوش آمدید</h1>
-    <p>در این سایت بازی‌ها و برنامه‌های ساخته شده من وجود دارد.</p>
-  </div>
-  
-  <script>
-    // نمایش و پنهان کردن نوار کناری
-    const hamburger = document.getElementById('hamburger');
-    const sidebar = document.getElementById('sidebar');
-    const closeBtn = document.getElementById('close-btn');
-    
-    hamburger.addEventListener('click', () => {
-      sidebar.classList.add('open');
-    });
-    
-    closeBtn.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-    });
-
-    // کد برای رسم پس زمینه هنری روی canvas
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // تغییر اندازه canvas به اندازه صفحه
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      drawBackground();
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-
-    function drawBackground() {
-      // پس زمینه آبی کم‌رنگ
-      ctx.fillStyle = "#d0e7ff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // رسم دایره‌های گرادیانی تار
-      for (let i = 0; i < 15; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        let radius = Math.random() * 80 + 20;
-        let gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        gradient.addColorStop(0, "rgba(0, 90, 180, 0.5)");  // مرکز دایره
-        gradient.addColorStop(1, "rgba(0, 90, 180, 0)");    // لبه‌های دایره
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // اضافه کردن انیمیشن به توپ‌ها
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(1, 1);
-        ctx.restore();
-      }
-    }
-
-    resizeCanvas();
-  </script>
+<header>
+	<h1>NHDownload</h1>
+</header>
+<nav>
+	<ul class="menu">
+		<li><a href="programs.html">Programs</a></li>
+		<li><a href="games.html">Games</a></li>
+	</ul>
+</nav>
+<div class="main">
+	<p>On this website, you can find my created games and applications.</p>
+</div>
+<footer>
+	<p>Made by Hacker225</p>
+</footer>
 </body>
 </html>

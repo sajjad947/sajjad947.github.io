@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>دانلود فایل</title>
+  <title>Download</title>
   <style>
     body {
       display: flex;
@@ -16,21 +16,18 @@
   </style>
 </head>
 <body>
-  <p>در حال آماده‌سازی دانلود...</p>
+  <p>Downloading in progress...</p>
 
   <script>
     window.onload = function() {
-      // مسیر فایل دانلودی را به این قسمت اختصاص دهید.
-      var fileURL = "Simple calculator.exe"; // به عنوان مثال: "files/myprogram.zip"
-      var fileName = "Simple calculator.exe"; // نام فایلی که دانلود می‌شود
+      var fileURL = "Simple calculator.exe";
+      var fileName = "Simple calculator.exe";
 
       var a = document.createElement('a');
       a.href = fileURL;
       a.download = fileName;
-      // اضافه کردن عنصر به صفحه (مهم برای برخی مرورگرها)
       document.body.appendChild(a);
       a.click();
-      // حذف عنصر پس از کلیک
       document.body.removeChild(a);
     };
   </script>

@@ -1,237 +1,147 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بازی‌ها - NHDownload</title>
-  <style>
-    /* استایل پایه */
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      overflow-x: hidden;
-      direction: rtl;
-      background: linear-gradient(135deg, #00aaff, #001f3f);
-      color: #fff;
-    }
-    /* استایل canvas پس‌زمینه */
-    #bgCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      width: 100%;
-      height: 100%;
-    }
-    /* استایل محتوای صفحه */
-    .container {
-      padding-top: 100px;
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
-    h1 {
-      font-size: 48px;
-      margin-bottom: 20px;
-      animation: fadeIn 2s ease-in-out;
-    }
-    /* استایل آیتم بازی */
-    .game-item {
-      width: 80%;
-      max-width: 600px;
-      margin: 20px auto;
-      background-color: rgba(0, 170, 255, 0.8);
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      transition: transform 0.3s, background-color 0.3s;
-      animation: slideIn 1s ease-in-out;
-    }
-    .game-item:hover {
-      background-color: rgba(0, 170, 255, 1);
-      transform: translateY(-10px);
-    }
-    .game-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .game-header .game-name {
-      flex: 1;
-    }
-    .game-header .game-icon {
-      width: 50px;
-      height: 50px;
-      background-color: #001f3f;
-      border-radius: 5px;
-      margin-left: 10px;
-      background-size: cover;
-      background-position: center;
-    }
-    .game-details {
-      margin-top: 15px;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
-      padding: 10px;
-      display: none;
-      color: #000;
-    }
-    .game-images {
-      display: flex;
-      overflow-x: auto;
-    }
-    .game-images img {
-      width: 100px;
-      height: 100px;
-      margin-right: 10px;
-      border-radius: 5px;
-    }
-    .download-box {
-      margin-top: 10px;
-      text-align: center;
-    }
-    .download-box button {
-      background-color: #001f3f;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .download-box button:hover {
-      background-color: #00aaff;
-    }
-    /* انیمیشن‌ها */
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    @keyframes slideIn {
-      0% {
-        opacity: 0;
-        transform: translateX(-100%);
-      }
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-  </style>
+	<meta charset="UTF-8">
+	<title>NHDownload</title>
+	<style>
+		body{
+			background-color: gray;
+			color: white;
+			font-family: Tahoma;
+			box-sizing: border-box;
+			padding: 0px;
+			margin: 0px;
+		}
+		header{
+			background-color: black;
+		}
+		.main{
+			display: flex;
+			justify-content: center;
+			height: auto;
+			width: auto;
+			box-shadow: 0px 0px 10px 2px rgb(255,255,255);
+		}
+		h1, h2{
+			text-align: center;
+			padding: 5px;
+		}
+		.menu{
+			background-color: lightGray;
+			display: flex;
+			gap: 20px;
+			list-style: none;
+			padding: 10px;
+			border-radius: 5px;
+		}
+		.menu li{
+			background-color: white;
+			border-radius: 10px;
+			cursor: pointer;
+			box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+			transition: transform 0.3s ease, background-color 0.3s ease;
+		}
+		.menu a{
+			text-decoration: none;
+			color: black;
+			display: block;
+			padding: 10px;
+		}
+		.menu li:hover{
+			background-color: gray;
+			transform: translateY(-3px)
+		}
+		.menu a:hover{
+			color: white;
+		}
+		footer{
+			text-align: center;
+			color: black;
+		}
+		.apps{
+			width: 100%;
+		}
+		.apps ul{
+			list-style: none;
+			padding: 0px;
+		}
+		.apps li{
+			background-color: white;
+			color: black;
+			border-radius: 10px;
+			padding: 10px;
+			margin: 10px;
+			box-shadow: 0 0 5px rgb(255,255,255);
+		}
+		.apps img{
+			height: 200px;
+			width: 200px;
+			border-radius: 5px;
+		}
+		.apps p{
+			background-color: lightGray;
+			border-radius: 10px;
+			padding: 10px;
+		}
+		.apps a{
+			text-decoration: none;
+			padding: 10px;
+			background-color: green;
+			color: white;
+			border-radius: 10px;
+			box-shadow: 0 2px 5px rgb(0,0,0.2);
+		}
+		.apps div{
+			margin: 8px;
+		}
+		.apps a:hover{
+			background-color: darkGreen;
+		}
+	</style>
 </head>
 <body>
-  <!-- Canvas پس‌زمینه -->
-  <canvas id="bgCanvas"></canvas>
-  
-  <div class="container">
-    <h1>بازی‌ها</h1>
-    <!-- محل قرارگیری آیتم‌های بازی -->
-    <div id="gameList"></div>
-  </div>
-  
-  <script>
-    /***** کد مربوط به پس‌زمینه (Canvas) *****/
-    const canvas = document.getElementById("bgCanvas");
-    const ctx = canvas.getContext("2d");
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      drawBackground();
-    }
-    window.addEventListener("resize", resizeCanvas);
-    function drawBackground() {
-      ctx.fillStyle = "#d0e7ff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < 15; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        let radius = Math.random() * 80 + 20;
-        let gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        gradient.addColorStop(0, "rgba(0, 90, 180, 0.5)");
-        gradient.addColorStop(1, "rgba(0, 90, 180, 0)");
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-    resizeCanvas();
-    
-    /***** آرایه اطلاعات بازی‌ها *****/
-    const games = [
-      {
-        name: "شطرنج ساده",
-        icon: "games/chess/logo.png",
-        images: ["games/chess/Screenshot1.png", "games/chess/Screenshot2.png"],
-        description: "این یک بازی شزرنج ساده ، ساخته شدن با زبان برنامه نویسی پایتون است.",
-        downloadLink: "games/chess/download.html"
-      },
-      {
-        name: "بازی",
-        icon: "",
-        images: [""],
-        description: "نصب کنی ، متوجه میشی چه بازی هست.😈",
-        downloadLink: "games/game/download.html"
-      },
-      {
-        name: "NikOS",
-        icon: "",
-        images: ["games/nikOS/Screenshot.png"],
-        description: "این بازی شبیه ساز سیستم عامل سلطان محمد حسین نیکونام است. شما در این بازی به تجربه بهترین سیستم عامل ساخته شده خواهید پرداخت.",
-        downloadLink: "games/nikOS/download.html"
-      }
-      // برای افزودن بازی جدید، یک شیء جدید به آرایه اضافه کنید.
-    ];
-    
-    /***** تابع رندر کردن بازی‌ها *****/
-    function renderGames() {
-      let container = document.getElementById("gameList");
-      let html = "";
-      games.forEach((game, index) => {
-        html += `
-          <div class="game-item">
-            <div class="game-header" onclick="toggleGameDetails(${index})">
-              <div class="game-name">${game.name}</div>
-              <div class="game-icon" style="background-image: url('${game.icon}');"></div>
-            </div>
-            <div class="game-details" id="gdetails-${index}">
-              <div class="game-images">
-                ${game.images.map(img => `<img src="${img}" alt="تصویر">`).join('')}
-              </div>
-              <p>${game.description}</p>
-              <div class="download-box">
-                <a href="${game.downloadLink}" target="_blank">
-                  <button>دانلود</button>
-                </a>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
-    
-    /***** تابع باز/بسته کردن جزئیات هر بازی *****/
-    function toggleGameDetails(index) {
-      const details = document.getElementById("gdetails-" + index);
-      if(details.style.display === "none" || details.style.display === "") {
-        details.style.display = "block";
-      } else {
-        details.style.display = "none";
-      }
-    }
-    
-    /***** رندر نهایی آیتم‌ها *****/
-    renderGames();
-  </script>
+<header>
+	<h1>NHDownload</h1>
+</header>
+<nav>
+	<h2>Games</h2>
+	<ul class="menu">
+		<li><a href="index.html">Back</a></li>
+		<li><a href="programs.html">Programs</a></li>
+	</ul>
+</nav>
+<div class="main">
+	<div class="apps">
+		<ul>
+			<li>
+				<div>
+					<h3>Simple chess</h3>
+					<img src="games/chess/Screenshot2.png" alt="No picture">
+					<p>This is a simple chess game, created using the Python programming language.</p>
+					<a href="games/chess/download.html">Download</a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<h3>Game</h3>
+					<img src="" alt="No picture">
+					<p>If you install it, you'll see what kind of game it is.😈</p>
+					<a href="games/game/download.html">Download</a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<h3>NikOS</h3>
+					<img src="games/nikOS/Screenshot.png" alt="No picture">
+					<p>This game is a simulation of Sultan Mohammad Hossein Nikounam's operating system. In this game, you will get to experience the best operating system ever created.</p>
+					<a href="games/nikOS/download.html">Download</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<footer>
+	<p>Made by Hacker225</p>
+</footer>
 </body>
 </html>
